@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Vikash!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .beach-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(255, 183, 94, 0.3) 0%,
+                rgba(255, 152, 0, 0.2) 50%,
+                rgba(41, 128, 185, 0.3) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Countdown Styles */
+        .countdown-container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 60px 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        .countdown-title {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .countdown-subtitle {
+            font-size: 1.5em;
+            color: #FF6B6B;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            min-width: 120px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .time-unit:hover {
+            transform: translateY(-5px);
+        }
+
+        .time-value {
+            font-size: 3em;
+            color: white;
+            font-weight: bold;
+            display: block;
+        }
+
+        .time-label {
+            font-size: 1em;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        .countdown-message {
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+        /* Birthday Card Styles */
+        .card {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 60px 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .card.show {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cake-icon {
+            font-size: 80px;
+            animation: bounce 2s infinite;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            font-weight: bold;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .name {
+            font-size: 2.5em;
+            color: #FF6B6B;
+            margin: 20px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .message {
+            font-size: 1.3em;
+            color: #555;
+            line-height: 1.8;
+            margin: 30px 0;
+            font-style: italic;
+        }
+
+        .from {
+            font-size: 1.2em;
+            color: #667eea;
+            margin-top: 40px;
+            font-weight: 600;
+        }
+
+        .decorations {
+            font-size: 40px;
+            margin: 20px 0;
+            letter-spacing: 10px;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M321.39 56.44c58-10.79 114.16-30.13 172-41.86 82.39-16.72 168.19-17.73 250.45-.39C823.78 31 906.67 72 985.66 92.83c70.05 18.48 146.53 26.09 214.34 3V0H0v27.35a600.21 600.21 0 00321.39 29.09z' fill='%23667eea' fill-opacity='0.3'/%3E%3C/svg%3E") repeat-x;
+            animation: wave 10s linear infinite;
+        }
+
+        @keyframes wave {
+            0% { background-position: 0 0; }
+            100% { background-position: 1200px 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .balloon {
+            position: fixed;
+            font-size: 50px;
+            animation: float 6s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        .sparkle {
+            display: inline-block;
+            animation: sparkle 1.5s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .name { font-size: 2em; }
+            .message { font-size: 1.1em; }
+            .card { padding: 40px 25px; }
+            .countdown-container { padding: 40px 25px; }
+            .countdown-title { font-size: 2em; }
+            .countdown-subtitle { font-size: 1.2em; }
+            .time-unit { min-width: 80px; padding: 15px; }
+            .time-value { font-size: 2em; }
+            .countdown-timer { gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="beach-overlay"></div>
+    
+    <div class="balloon" style="left: 10%; top: 20%;">🎈</div>
+    <div class="balloon" style="right: 15%; top: 30%; animation-delay: 1s;">🎈</div>
+    <div class="balloon" style="left: 20%; bottom: 20%; animation-delay: 2s;">🎈</div>
+    <div class="balloon" style="right: 10%; bottom: 30%; animation-delay: 1.5s;">🎈</div>
+
+    <div class="container">
+        <!-- Countdown Section -->
+        <div class="countdown-container" id="countdownSection">
+            <div class="countdown-title">🎊 Birthday Countdown 🎊</div>
+            <div class="countdown-subtitle">Vikash Kumar's Special Day</div>
+            
+            <div class="countdown-timer" id="timer">
+                <div class="time-unit">
+                    <span class="time-value" id="days">00</span>
+                    <span class="time-label">Days</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="hours">00</span>
+                    <span class="time-label">Hours</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="minutes">00</span>
+                    <span class="time-label">Minutes</span>
+                </div>
+                <div class="time-unit">
+                    <span class="time-value" id="seconds">00</span>
+                    <span class="time-label">Seconds</span>
+                </div>
+            </div>
+            
+            <div class="countdown-message">
+                ⏰ Counting down to an amazing celebration! ⏰
+            </div>
+        </div>
+
+        <!-- Birthday Card Section -->
+        <div class="card" id="birthdayCard">
+            <div class="cake-icon">🎂</div>
+            <h1>Happy Birthday!</h1>
+            
+            <div class="name">Vikash Kumar</div>
+            
+            <div class="decorations">
+                <span class="sparkle">✨</span>
+                <span class="sparkle" style="animation-delay: 0.3s;">🌟</span>
+                <span class="sparkle" style="animation-delay: 0.6s;">✨</span>
+            </div>
+            
+            <div class="message">
+                On this special day, I wish you endless joy, abundant success, and countless beautiful moments ahead. May your journey be filled with happiness, laughter, and all the dreams your heart desires. Just like the beautiful sunset on the beach, may your life be painted with the most vibrant colors of love and prosperity!
+            </div>
+            
+            <div class="decorations">🎉 🎊 🎁 🎈 🎆</div>
+            
+            <div class="from">
+                With warmest wishes,<br>
+                <strong>Kamran Hussain</strong>
+            </div>
+        </div>
+        
+        <div class="wave"></div>
+    </div>
+
+    <script>
+        // Set the target date to January 1, 2026 at midnight
+        const targetDate = new Date('2026-01-01T00:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                // Birthday has arrived! Show the card
+                document.getElementById('countdownSection').classList.add('hidden');
+                document.getElementById('birthdayCard').classList.add('show');
+                createConfetti();
+                return;
+            }
+
+            // Calculate time units
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Update the display
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        // Create floating confetti
+        function createConfetti() {
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(confetti);
+            }
+        }
+
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
